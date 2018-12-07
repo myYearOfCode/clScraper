@@ -1,0 +1,15 @@
+this is a bare bones example of how to run express as an api server and router
+and also run react as a front end page renderer (and router)
+
+both parts need their own server running. cd into the build and root directories
+and run
+"npm start"
+
+one will run (React) on port 3000 and the other (express) on 5000
+
+they really are two different servers on two different ports. I think that in
+a production environment  the web server would be on the standard port, but I'm
+unsure what the api server would be on. can they both be on the same port?
+
+the react app calls the list api call, but I'm unsure how the servers know which
+one of them is being called because the url is just 'api/getList'
