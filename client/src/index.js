@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import App from './App/App';
+const myModule = require('../../clScraper');
+let val = myModule.getDivs(); // val is "Hello" 
 // import * as serviceWorker from './serviceWorker';
 
 // ReactDOM.render(<App />, document.getElementById('root'));
