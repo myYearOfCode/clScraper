@@ -17,24 +17,21 @@ const url = 'https://boston.craigslist.org/search/sss?query=yuba+%7C+%22big+dumm
 app.get('/doit', function (req, res) {
 
   let resultItems = []
-rp(url) // returns a promise
-  .then(function(html){
-    //success!
-    //this is how you save the results in an array
-    let header = "<!DOCTYPE html><html lang='en' dir='ltr'><head><meta charset='utf-8'><title></title></head<body>"
-    resultItems.push(header)
-    $('.rows', html).each(function(index) {
-      resultItems.push($(this).html())
+  rp(url) // returns a promise
+    .then(function(html){
+      let header = "<html lang='en' dir='ltr'><head><meta charset='utf-8'><title>api access</title></head><body>hello world!"
+      resultItems.push(header)
+      $('.rows', html).each(function(index) {
+         resultItems.push($(this).html())
+      })
+      resultItems.push("</body></html>")
+      res.send(resultItems.join("") )
     })
-    resultItems.push("</body></html>")
-    console.log(resultItems)
-    return resultItems
-  })
-  .catch(function(err){
-    //handle error
-    console.log(err)
-  })
-  res.send(resultItems )
+    .catch(function(err){
+      //handle error
+      console.log(err)
+      res.send(`an error occurred ${err}`)
+    })
 })
 
 // serve the static files from the React app
