@@ -1,0 +1,2 @@
+20190302
+I got the bare node file into a react / express framework with both servers running simultaneously. I haven't been able to get the express server to display the results of the scrape on the page yet though. Possibly because it is not willing to wait for the promises to complete.
