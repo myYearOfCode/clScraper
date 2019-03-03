@@ -1,31 +1,14 @@
-const express = require('express');
+var express = require('express')
+var app = express()
 const path = require('path');
+const port = 3000
 
-const app = express();
-const myModule = require('./clScraper');
-let val = myModule.getDivs(); // val is "Hello"
-console.log(val)
+// respond with "hello world" when a GET request is made to the homepage
+app.get('/', function (req, res) {
+  res.send('hello world')
+})
 
 // serve the static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// an api endpoint that returns a short list of items
-app.get('/api/getList', (req,res) => {
-  var list = ["item1", "item2", "item3"];
-  res.json(val);
-  // val = myModule.getDivs()
-  // .then((val) => {
-  //   res.json(myModule.getDivs())
-  //   console.log('sent list of items');
-  // })
-});
-
-// handles any requests that don't match the ones above
-app.get('*', (req,res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
-
-const port = process.env.PORT || 5000;
-app.listen(port);
-
-console.log('App is listening on port ' + port);
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
