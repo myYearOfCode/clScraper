@@ -1,0 +1,9 @@
+.outside {
+  border-style: solid;
+  border-color: #000;
+  margin: 10px;
+}
+
+.body {
+  background-color: #000;
+}

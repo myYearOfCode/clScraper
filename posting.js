@@ -9,6 +9,17 @@ class Posting {
     this.description = description
   }
 
+  display (){
+      return (`
+        <div class = "outside">
+        <div class = "${this.title}" > ${this.title} </div>
+        <div class = "${this.price}" > ${this.price} </div>
+        <div class = "${this.location}" > ${this.location} </div>
+        <div class = "${this.link}" > ${this.link} </div>
+        <div class = "${this.description}" > ${this.description} </div>
+        </div>`)
+  }
+
   printAttrs(){
     console.log( `///////////\n ${this.title} ${this.price} ${this.location} ${this.link} ${this.dataIdString }` )
   }

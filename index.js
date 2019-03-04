@@ -40,10 +40,10 @@ app.get('/doit', function (req, res) {
   let resultItems = []
   rp(url) // returns a promise
     .then(function(html){
-      let header = "<html lang='en' dir='ltr'><head><meta charset='utf-8'><title>api access</title></head><body>hello world!"
+      let header = "<html lang='en' dir='ltr'><head><meta charset='utf-8'><title>api access</title><link rel='stylesheet' href='./style/style.css'></head><body>hello world!"
       resultItems.push(header)
       $('.result-row', html).each(function(index) {
-         resultItems.push($(this).html())
+         // resultItems.push($(this).html())
          let dataIdString = $(this).find('a').attr('data-ids')
          let title = $(this).find('.result-title').text()
          let price = $(this).find('.result-price').first().text()
@@ -51,9 +51,9 @@ app.get('/doit', function (req, res) {
          let link = $(this).find('.result-title').attr('href')
          // console.log( title, price, location, link, dataIdString)
          let newObject = new Posting(dataIdString,title,price,location,link)
-         newObject.printAttrs()
-         // let description =
-         // resultItems.push(getImage())
+         // newObject.printAttrs()
+         resultItems.push(getImage(dataIdString, 'x'))
+         resultItems.push(newObject.display())
          // let firstImage = `<img src = "https://images.craigslist.org/${}_300x300.jpg">`
       })
       resultItems.push("</body></html>")
@@ -67,6 +67,12 @@ app.get('/doit', function (req, res) {
 })
 
 // serve the static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+
+// this is dangerous and will have to be removed when the react part is built
+app.use(express.static(__dirname));
+
+/////// kee pthis and enable for react
+// app.use(express.static(path.join(__dirname, 'client/build')));
+///////
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
