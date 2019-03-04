@@ -36,11 +36,11 @@ let parseDataId = (dataId)=> {
 }
 
 app.get('/doit', function (req, res) {
-
+let blocked = ['6825381358']
   let resultItems = []
   rp(url) // returns a promise
     .then(function(html){
-      let header = "<html lang='en' dir='ltr'><head><meta charset='utf-8'><title>api access</title><link rel='stylesheet' href='./style/style.css'></head><body>hello world!"
+      let header = `<html lang='en' dir='ltr'><head><meta charset='utf-8'><title>api access</title><link rel='stylesheet' href='./style/style.css'></head><body><div class = "wrapper">`
       resultItems.push(header)
       $('.result-row', html).each(function(index) {
          // resultItems.push($(this).html())
@@ -49,14 +49,16 @@ app.get('/doit', function (req, res) {
          let price = $(this).find('.result-price').first().text()
          let location = $(this).find('.result-hood').text() || "No Location"
          let link = $(this).find('.result-title').attr('href')
+         let dataPid = $(this).attr('data-pid')
+         console.log(`dataPid = ${dataPid}`)
          // console.log( title, price, location, link, dataIdString)
-         let newObject = new Posting(dataIdString,title,price,location,link)
+         let newObject = new Posting(dataIdString,title,price,location,link,blocked,dataPid)
          // newObject.printAttrs()
-         resultItems.push(getImage(dataIdString, 'x'))
+         // resultItems.push(getImage(dataIdString, 'x'))
          resultItems.push(newObject.display())
          // let firstImage = `<img src = "https://images.craigslist.org/${}_300x300.jpg">`
       })
-      resultItems.push("</body></html>")
+      resultItems.push("</div></body></html>")
       res.send(resultItems.join("") )
     })
     .catch(function(err){
