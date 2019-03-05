@@ -6,17 +6,12 @@ class Posting {
     this.price = price,
     this.location = location,
     this.link = link,
-    // this.description = description,
     this.blocked = blocked,
     this.dataPid = dataPid
   }
 
   getImage(dataId) {
-    /*sizes:
-    50x50
-    300x300
-    600x450
-    */
+    // sizes:50x50 / 300x300 / 600x450
     let images = (this.parseDataId(dataId))
     // TODO this is hard-coded to return one image
     // return images.map((image) => {
@@ -33,27 +28,25 @@ class Posting {
   }
 
   display (){
-      if (!(this.blocked).find((each) => {
-        return (each === this.dataPid)}
-      )) {
+    if (!(this.blocked).find((each) => {
+      return (each === this.dataPid)}
+    )) {
       console.log(`${this.blocked} ${this.dataPid}`)
         return (`
-        <div class = "outside">
-          <div class = "photoDiv">
-            ${this.getImage(this.dataIdString)}
-          </div>
-          <div class="text">
-            <a href = "${this.link}">
-              <div class = "${this.title}" > ${this.title} </div>
-            </a>
-            <div class = "${this.price}" > ${this.price} </div>
-            <div class = "${this.location}" > Location: ${this.location} </div>
-            <div class = "${this.description}" > ${this.description || ""} </div>
-            <div class = "hideElement" > Hide </div>
-          </div>
-        </div>`)
-      }
-
+          <div class = "outside">
+            <div class = "photoDiv">
+              ${this.getImage(this.dataIdString)}
+            </div>
+            <div class="text">
+              <a href = "${this.link}">
+                <div class = "${this.title}" > ${this.title} </div>
+              </a>
+              <div class = "${this.price}" > ${this.price} </div>
+              <div class = "${this.location}" > Location: ${this.location} </div>
+              <div class = "hideElement" > Hide </div>
+            </div>
+          </div>`)
+    }
   }
 
   printAttrs(){

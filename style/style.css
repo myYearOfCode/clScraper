@@ -1,13 +1,23 @@
+body {
+  background-color: #ddd;
+  font-family: 'Quicksand', sans-serif;
+}
+
 .outside {
-  border-style: solid;
-  border-color: #000;
+  background-color: white;
+  /* border-style: solid;
+  border-width: thin;
+  border-color: #000; */
+  border-radius: 5px;
+  box-shadow: 10px 10px 15px grey;
   margin: 10px;
   max-width: 310px;
   padding: 10px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  /* justify-content: center; */
+  justify-content: flex-start;
+  align-content: flex-start;
 }
 
 .photoDiv {
@@ -17,9 +27,10 @@
   display: flex;
   justify-content: center;
   align-content: flex-start;
+  padding-bottom: 10px;
 }
 
-.photo300 {  
+.photo300 {
   /* margin: auto; */
   align-self: flex-start;
 }
@@ -32,6 +43,9 @@
   flex-wrap: wrap;
 }
 
+a {
+  font-weight: bold;
+}
 /* img {
   margin:auto;
 } */
