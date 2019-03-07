@@ -1,5 +1,5 @@
 class Posting {
-  constructor(dataIdString,title,price,location,link, blocked, dataPid){
+  constructor(dataIdString,title,price,location,link, blocked, dataPid, repostPid){
     this.dataIdString = dataIdString,
     // this.dataIds = process data id string here,
     this.title = title,
@@ -7,7 +7,8 @@ class Posting {
     this.location = location,
     this.link = link,
     this.blocked = blocked,
-    this.dataPid = dataPid
+    this.dataPid = dataPid,
+    this.repostPid = repostPid
   }
 
   getImage(dataId) {
@@ -27,9 +28,16 @@ class Posting {
     return imageArray
   }
 
-  display (){
+  display (updateBlocked){
+    // if (!(Object.keys(this.blocked)).find((each) => {
     if (!(this.blocked).find((each) => {
-      return (each === this.dataPid)}
+      if (each === this.dataPid || each === this.repostPid) {
+        updateBlocked(this.dataPid)
+        updateBlocked(this.repostPid)
+        return true
+      }
+
+    }
     )) {
       console.log(`${this.blocked} ${this.dataPid}`)
         return (`
@@ -43,7 +51,7 @@ class Posting {
               </a>
               <div class = "${this.price}" > ${this.price} </div>
               <div class = "${this.location}" > Location: ${this.location} </div>
-              <div class = "hideElement" > Hide </div>
+              <div class = "hideElement"> Hide </div>
             </div>
           </div>`)
     }
