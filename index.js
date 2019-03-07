@@ -15,9 +15,9 @@ app.get('/', function (req, res) {
 const rp = require('request-promise');
 const $ = require('cheerio');
 
-const url = 'https://boston.craigslist.org/search/sss?query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1&sort=rel'
-
-const urls = ['https://vermont.craigslist.org/search/sss?sort=rel&query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1','https://boston.craigslist.org/search/sss?query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1&sort=rel']
+const urls = ['https://vermont.craigslist.org/search/sss?sort=rel&query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1',
+'https://boston.craigslist.org/search/sss?query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1&sort=rel',
+'https://maine.craigslist.org/search/sss?sort=rel&query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1']
 
 let getImage = (dataId,size) => {
 /*sizes:
@@ -57,42 +57,47 @@ app.get('/doit', function (req, res) {
   // db.diskDb.save(blocked);
   // }
   let resultItems = []
-  rp(url) // returns a promise
-    .then(function(html){
-      let header = `<html lang='en' dir='ltr'><head><meta charset='utf-8'><title>api access</title>    <link href="https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Roboto" rel="stylesheet"><link rel='stylesheet' href='./style/style.css'></head><body><div class = "wrapper">`
-      resultItems.push(header)
+  let header = `<html lang='en' dir='ltr'><head><meta charset='utf-8'><title>api access</title>    <link href="https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Roboto" rel="stylesheet"><link rel='stylesheet' href='./style/style.css'></head><body><div class = "wrapper">`
+  resultItems.push(header)
+  urls.forEach((url, index) => {
+    rp(url) // returns a promise
+      .then(function(html){
 
-      $('.result-row', html).each(function(index) {
-         // resultItems.push($(this).html())
 
-         let dataIdString = $(this).find('a').attr('data-ids')
-         let title = $(this).find('.result-title').text()
-         let price = $(this).find('.result-price').first().text()
-         let location = $(this).find('.result-hood').text() || "No Location"
-         let link = $(this).find('.result-title').attr('href')
-         let dataPid = $(this).attr('data-pid')
-         let repostPid = $(this).attr('data-repost-of')
-         let newObject = new Posting(
-           dataIdString,
-           title,
-           price,
-           location,
-           link,
-           blocked,
-           dataPid,
-           repostPid)
-         resultItems.push(newObject.display(updateBlocked))
+        $('.result-row', html).each(function(index) {
+           // resultItems.push($(this).html())
+
+           let dataIdString = $(this).find('a').attr('data-ids')
+           let title = $(this).find('.result-title').text()
+           let price = $(this).find('.result-price').first().text()
+           let location = $(this).find('.result-hood').text() || "No Location"
+           let link = $(this).find('.result-title').attr('href')
+           let dataPid = $(this).attr('data-pid')
+           let repostPid = $(this).attr('data-repost-of')
+           let newObject = new Posting(
+             dataIdString,
+             title,
+             price,
+             location,
+             link,
+             blocked,
+             dataPid,
+             repostPid)
+           resultItems.push(newObject.display(updateBlocked))
+        })
+      if (index === urls.length-1){ // if we are at the end of the list
+        resultItems.push("</div></body></html>")
+        res.send(resultItems.join("") )
+      }
       })
-      resultItems.push("</div></body></html>")
-      res.send(resultItems.join("") )
-    })
-    .catch(function(err){
-      //handle error
-      console.log(err)
-      res.send(`an error occurred ${err}`)
-    })
-})
+      .catch(function(err){
+        //handle error
+        console.log(err)
+        res.send(`an error occurred ${err}`)
+      })
+  })
 
+})
 // serve the static files from the React app
 
 // this is dangerous and will have to be removed when the react part is built
