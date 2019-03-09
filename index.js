@@ -164,4 +164,4 @@ app.use(express.static(__dirname));
 // app.use(express.static(path.join(__dirname, 'client/build')));
 ///////
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Express backend listening on port ${port}!`))
