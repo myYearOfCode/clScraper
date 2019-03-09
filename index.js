@@ -1,4 +1,5 @@
 var express = require('express')
+var cors = require('cors');
 var app = express()
 const path = require('path');
 const port = 3001
@@ -6,6 +7,20 @@ const Posting = require('./posting')
 var db = require('diskdb');
 db = db.connect('./db/', ['diskDb']);
 
+//setup CORS whitelist
+// Set up a whitelist and check against it:
+var whitelist = ['http://localhost:3000']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+// setup CORS before the routes are set up:
+app.use(cors());
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function (req, res) {
   res.send('hello world')

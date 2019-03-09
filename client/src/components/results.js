@@ -8,17 +8,24 @@ class Results extends Component {
     }
   }
 
-
-  render () {
+  async componentDidMount() {
     let apiData = fetch(
       `http://localhost:3001/getData`
     )
     .then(response => {
-      console.log(response.json())
-      return JSON.stringify(response.json());
+      return response.json() //creates its own promise?!?!
     })
+    .then(data => {
+      console.log(data);
+      this.setState({data: data})
+    })
+  }
+
+  render () {
     return(
-      apiData
+      <div>
+       {this.state.keys || "waiting for data"}
+      </div>
     )
   }
 }
