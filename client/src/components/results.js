@@ -31,7 +31,16 @@ class Results extends Component {
 /////
 //figure out how to add event listener for all hide buttons that grabs the id of each hid button when it is clicked.
   componentDidUpdate() {
-    let display = (event) => {console.log(event.srcElement.id)}
+    let display = (event) => {
+      console.log(event.srcElement.id)
+      let clicked = document.getElementById(event.srcElement.id).closest('.outside')
+      clicked.classList.add('hidden')
+      let blockedPosts = JSON.parse(window.localStorage.getItem('blockedPosts'))  || [];
+      blockedPosts.push(event.srcElement.id)
+      window.localStorage.setItem('blockedPosts',JSON.stringify(blockedPosts));
+      this.updateBlocked()
+      // this.updateBlocked(event.srcElement.id)
+    }
     let x = document.getElementsByClassName("hideElement")
     let  y = [...x];
     y.forEach((each) => {each.addEventListener('click', display)})
