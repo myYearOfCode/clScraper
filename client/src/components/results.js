@@ -28,8 +28,7 @@ class Results extends Component {
       </div>
       </div>)
   }
-/////
-//figure out how to add event listener for all hide buttons that grabs the id of each hid button when it is clicked.
+
   componentDidUpdate() {
     let display = (event) => {
       event.preventDefault();
@@ -48,7 +47,8 @@ class Results extends Component {
   }
 
   async componentDidMount() {
-    let apiData = fetch(
+    // let apiData =
+    fetch(
       `http://localhost:3001/getData`
     )
     .then(response => {
@@ -65,7 +65,7 @@ class Results extends Component {
     // return images.map((image) => {
     let url = `https://images.craigslist.org/${images[0]}_300x300.jpg`
     return (
-      <img src = {url} />
+      <img src = {url} alt=""/>
     )
   }
 
@@ -79,18 +79,15 @@ class Results extends Component {
 
 
   makePosts = () => {
+    let posted = []
     try {
       if (Object.keys(this.state.data).length > 0) {
         return Object.keys(this.state.data).map(key => {
           let post = this.state.data[key]
-          if (!(this.state.blocked).find((each) => {
-            console.log(`${each}, ${post.dataPid}, ${each === post.dataPid}`)
-            if (each === post.dataPid || each === post.repostPid) {
-              // this.updateBlocked(this.dataPid)
-              // this.updateBlocked(this.repostPid)
-              return true
-            }
-          })) {
+          let blockList = this.state.blocked
+          if ((!blockList.includes(post.dataPid)) && (!blockList.includes(post.repostPid)) && (!posted.includes(post.dataPid)) && (!posted.includes(post.repostPid))) {
+            posted.push(post.dataPid)
+            posted.push(post.repostPid)
             return this.makePostDiv(post)
           }
         })
