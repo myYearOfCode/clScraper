@@ -44,7 +44,8 @@ body {
 .hidden {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s 1s, opacity 1s linear;
+  display: none;
+  transition: visibility 0s 1s, opacity 1s, display 1s 2s linear;
 }
 
 a {

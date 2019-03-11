@@ -24,7 +24,7 @@ class Results extends Component {
       </a>
       <div className = {post.price} > {post.price} </div>
       <div className = {post.location} > Location: {post.location} </div>
-      <div className = "hideElement"> <a href="#" className="hideLink" id={post.dataPid}>Hide</a></div>
+      <div className = "hideElement"> <a href="http://localhost:3000" className="hideLink" id={post.dataPid}>Hide</a></div>
       </div>
       </div>)
   }
@@ -32,17 +32,18 @@ class Results extends Component {
 //figure out how to add event listener for all hide buttons that grabs the id of each hid button when it is clicked.
   componentDidUpdate() {
     let display = (event) => {
+      event.preventDefault();
       console.log(event.srcElement.id)
       let clicked = document.getElementById(event.srcElement.id).closest('.outside')
       clicked.classList.add('hidden')
       let blockedPosts = JSON.parse(window.localStorage.getItem('blockedPosts'))  || [];
       blockedPosts.push(event.srcElement.id)
       window.localStorage.setItem('blockedPosts',JSON.stringify(blockedPosts));
-      this.updateBlocked()
-      // this.updateBlocked(event.srcElement.id)
+      this.state.updateBlocked()
+      return false
     }
-    let x = document.getElementsByClassName("hideElement")
-    let  y = [...x];
+    let x = document.getElementsByClassName("hideElement") || [];
+    let y = [...x];
     y.forEach((each) => {each.addEventListener('click', display)})
   }
 
@@ -83,7 +84,8 @@ class Results extends Component {
         return Object.keys(this.state.data).map(key => {
           let post = this.state.data[key]
           if (!(this.state.blocked).find((each) => {
-            if (each === this.dataPid || each === this.repostPid) {
+            console.log(`${each}, ${post.dataPid}, ${each === post.dataPid}`)
+            if (each === post.dataPid || each === post.repostPid) {
               // this.updateBlocked(this.dataPid)
               // this.updateBlocked(this.repostPid)
               return true
