@@ -5,7 +5,10 @@ class Results extends Component {
   constructor(props){
     super(props);
     this.state = {
-      data: [],
+      blocked: this.props.blocked,
+      updateBlocked: this.props.updateBlocked,
+      ata: [],
+
     }
   }
 
@@ -21,9 +24,17 @@ class Results extends Component {
       </a>
       <div className = {post.price} > {post.price} </div>
       <div className = {post.location} > Location: {post.location} </div>
-      <div className = "hideElement"> Hide </div>
+      <div className = "hideElement"> <a href="#" className="hideLink" id={post.dataPid}>Hide</a></div>
       </div>
       </div>)
+  }
+/////
+//figure out how to add event listener for all hide buttons that grabs the id of each hid button when it is clicked.
+  componentDidUpdate() {
+    let display = (event) => {console.log(event.srcElement.id)}
+    let x = document.getElementsByClassName("hideElement")
+    let  y = [...x];
+    y.forEach((each) => {each.addEventListener('click', display)})
   }
 
   async componentDidMount() {
@@ -35,15 +46,6 @@ class Results extends Component {
     })
     .then(data => {
       this.setState({data: data})
-      console.log(this.state.data);
-      return (Object.keys(this.state.data)[0])
-      if (Object.keys(this.state.data).length > 0) {
-        return Object.keys(this.state.data).map(key => {
-          let post = this.state.data[key]
-          return this.makePostDiv(post)
-        })
-      }
-      // this.setState({content: output})
     })
   }
 
@@ -67,14 +69,25 @@ class Results extends Component {
 
 
   makePosts = () => {
-    // how can I get this to wait for the api call before it processes?
-    // or at least refresh after the state is updated?
-    if (Object.keys(this.state.data).length > 0) {
-      return Object.keys(this.state.data).map(key => {
-        let post = this.state.data[key]
-        return this.makePostDiv(post)
-      })
+    try {
+      if (Object.keys(this.state.data).length > 0) {
+        return Object.keys(this.state.data).map(key => {
+          let post = this.state.data[key]
+          if (!(this.state.blocked).find((each) => {
+            if (each === this.dataPid || each === this.repostPid) {
+              // this.updateBlocked(this.dataPid)
+              // this.updateBlocked(this.repostPid)
+              return true
+            }
+          })) {
+            return this.makePostDiv(post)
+          }
+        })
+      }
     }
+      catch (error){
+        console.log(`error in results ${error}`)
+      }
   }
 
   render () {
@@ -82,6 +95,7 @@ class Results extends Component {
       <div className="wrapper">
         {this.makePosts()}
       </div>
+      // {this.makeEventHandlers()}
     )
   }
 }
