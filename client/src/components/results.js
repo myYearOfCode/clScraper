@@ -7,10 +7,9 @@ class Results extends Component {
     this.state = {
       blocked: this.props.blocked,
       updateBlocked: this.props.updateBlocked,
-      ata: [],
-
-    }
+      data: {}
   }
+}
 
   makePostDiv = (post) => {
     return (
@@ -27,6 +26,23 @@ class Results extends Component {
       <div className = "hideElement"> <a href="http://localhost:3000" className="hideLink" id={post.dataPid}>Hide</a></div>
       </div>
       </div>)
+  }
+
+  componentWillMount() {
+    let newObject = {}
+    for (let i = 0; i < 13; i++) {
+      newObject[i] = {blocked: [],
+        dataIdString: "",
+        dataPid: i,
+        link: "",
+        location: "",
+        price: "",
+        repostPid: i,
+        title: "",
+          }
+    }
+    console.log(newObject)
+    this.setState({data: newObject})
   }
 
   componentDidUpdate() {
@@ -55,7 +71,9 @@ class Results extends Component {
       return response.json() //creates its own promise?!?!
     })
     .then(data => {
+      this.setState({data: {}}) //clears the state data
       this.setState({data: data})
+      console.log(this.state.data)
     })
   }
 
