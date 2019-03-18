@@ -29,6 +29,11 @@ app.get('/', function (req, res) {
   res.send('hello world')
 })
 
+// app.get('/query_test', function (req, res) {
+//   console.log(req.query)
+//   res.send(req.query.query)
+// })
+
 const urls = ['https://vermont.craigslist.org/search/sss?sort=rel&query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1',
 'https://boston.craigslist.org/search/sss?query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1&sort=rel',
 'https://maine.craigslist.org/search/sss?sort=rel&query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1']
@@ -74,10 +79,10 @@ app.get('/getData', function (req, res) {
 
 // serve the static files from the React app
 // this is dangerous and will have to be removed when the react part is built
-app.use(express.static(__dirname));
+// app.use(express.static(__dirname));
 
 /////// keep this and enable for react
-// app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'client/src')));
 ///////
 
 app.listen(port, () => console.log(`Express backend listening on port ${port}!`))
