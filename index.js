@@ -29,10 +29,10 @@ app.use(cors(whitelist));
 //   res.send('hello world')
 // })
 
-// app.get('/query_test', function (req, res) {
-//   console.log(req.query)
-//   res.send(req.query.query)
-// })
+app.get('/query_test', function (req, res) {
+  console.log(req.query)
+  res.send(req.query.query)
+})
 
 const urls = ['https://vermont.craigslist.org/search/sss?sort=rel&query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1',
 'https://boston.craigslist.org/search/sss?query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1&sort=rel',
@@ -44,8 +44,9 @@ let blocked = ['6825381358','6819957875','6043518208'] // replace with db or fil
 
 app.get('/api/', function (req, res) {
   let results = {}
-  url_bases.forEach((base, index) => {
-    rp(`https://${base}.craigslist.org/search/sss?query=${req.query}`) // returns a promise
+  let cities = req.query.cities.split(',')
+  cities.forEach((base, index) => {
+    rp(`https://${base}.craigslist.org/search/sss?query=${req.query.search}`) // returns a promise
       .then(function(html){
         $('.result-row', html).each(function(index) {
            let dataIdString = $(this).find('a').attr('data-ids')
