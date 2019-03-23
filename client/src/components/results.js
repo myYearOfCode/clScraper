@@ -64,25 +64,6 @@ class Results extends Component {
   }
 
   async componentDidMount() {
-    // get values from url query
-    // console.log(this)
-    // try {
-    //   console.log("hi")
-    //   console.log(this.props.location.search)
-    //   const values = queryString.parse(this.props.location.search)
-    //   console.log(values)
-    // }
-    // catch {
-    //   console.log('OHNO')
-    // }
-    // finally {
-    //   console.log('hmmmmm')
-    // }
-     // if (values.length > 0)  {
-    //   console.log(values.query) // "top"
-    //   let query = values.query
-    // }
-    // console.log(values.origin) // "im"
     fetch(
       `http://localhost:3001/getData`//`${query}`
     )
@@ -96,22 +77,40 @@ class Results extends Component {
     })
   }
 
+  updateMainState = (data) => {
+    this.setState({data: {}}) //clears the state data
+    this.setState({data: data})
+    console.log(this.state.data)
+  }
+
   getImage = (dataId,size) => {
     // sizes: 50x50 300x300 600x450
-    let images = (this.parseDataId(dataId));
-    // return images.map((image) => {
-    let url = `https://images.craigslist.org/${images[0]}_300x300.jpg`
+    let url = ""
+    if (dataId != undefined) {
+      let images = (this.parseDataId(dataId));
+      // return images.map((image) => {
+       url = `https://images.craigslist.org/${images[0]}_300x300.jpg`
+    } else {
+     url = ""
+    }
     return (
       <img src = {url} alt=""/>
     )
   }
 
   parseDataId = (dataId) => {
-    let imageArray = dataId.split(",")
-    imageArray = imageArray.map((imageId) => {
-      return (imageId.split(":")[1])
-    })
-    return imageArray
+    if (dataId != undefined) {
+      try {
+        let imageArray = dataId.split(",") || ""
+        imageArray = imageArray.map((imageId) => {
+          return (imageId.split(":")[1])
+        })
+        return imageArray
+      }
+      catch (error){
+        console.error(`Error parsing dataId ${error}`)
+      }
+    }
   }
 
 
@@ -138,7 +137,7 @@ class Results extends Component {
   render () {
     return (
       <div className="outside5">
-      <SearchBar />
+      <SearchBar updateMainState = {this.updateMainState}/>
         <div className="wrapper">
           {this.makePosts()}
         </div>

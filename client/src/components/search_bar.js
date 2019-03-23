@@ -7,6 +7,7 @@ class SearchBar extends Component {
   constructor(props){
     super(props);
     this.state = {
+      updateMainState: props.updateMainState
     }
   }
 
@@ -26,9 +27,11 @@ class SearchBar extends Component {
         return response.json() //creates its own promise?!?!
       })
       .then(data => {
-        this.setState({data: {}}) //clears the state data
-        this.setState({data: data})
-        console.log(this.state.data)
+        console.log(data)
+        this.state.updateMainState(data)
+        // this.setState({data: {}}) //clears the state data
+        // this.setState({data: data})
+        // console.log(this.state.data)
       })
     }
     //bind the callback function to the element
