@@ -17,9 +17,10 @@ class SearchBar extends Component {
     //this will be a promise
     let getNewSearch = (event) => {
       // parse the event data to get the form data and then use it
-      let query = encodeURI(document.getElementsByClassName('input-group-field')[0])
+      let query = encodeURI(document.getElementsByClassName('input-group-field')[0].value)
+      console.log(query)
       fetch(
-        `http://localhost:3001/getData?${query}`
+        `http://localhost:3001/api?search=${query}&cities=boston%2Cvermont%2Cmaine`
       )
       .then(response => {
         return response.json() //creates its own promise?!?!

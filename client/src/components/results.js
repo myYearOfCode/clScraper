@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import queryString from "query-string"
 // const Posting = require('./posting')
-
+import SearchBar from './search_bar'
 class Results extends Component {
   constructor(props){
     super(props);
@@ -63,9 +64,27 @@ class Results extends Component {
   }
 
   async componentDidMount() {
-    // let apiData =
+    // get values from url query
+    // console.log(this)
+    // try {
+    //   console.log("hi")
+    //   console.log(this.props.location.search)
+    //   const values = queryString.parse(this.props.location.search)
+    //   console.log(values)
+    // }
+    // catch {
+    //   console.log('OHNO')
+    // }
+    // finally {
+    //   console.log('hmmmmm')
+    // }
+     // if (values.length > 0)  {
+    //   console.log(values.query) // "top"
+    //   let query = values.query
+    // }
+    // console.log(values.origin) // "im"
     fetch(
-      `http://localhost:3001/getData`
+      `http://localhost:3001/getData`//`${query}`
     )
     .then(response => {
       return response.json() //creates its own promise?!?!
@@ -118,10 +137,13 @@ class Results extends Component {
 
   render () {
     return (
-      <div className="wrapper">
-        {this.makePosts()}
+      <div className="outside5">
+      <SearchBar />
+        <div className="wrapper">
+          {this.makePosts()}
+        </div>
       </div>
-      // {this.makeEventHandlers()}
+
     )
   }
 }
