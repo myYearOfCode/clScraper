@@ -43,10 +43,10 @@ class SearchBar extends Component {
   render () {
     return(
     <div className= "headerBar">
-      <div class="input-group">
-        <input class="input-group-field" type="text" />
-        <div class="input-group-button">
-          <input type="submit" class="button" id="submit_search" value="Search" />
+      <div className="input-group">
+        <input className="input-group-field" type="text" />
+        <div className="input-group-button">
+          <input type="submit" className="button" id="submit_search" value="Search" />
         </div>
       </div>
     </div>

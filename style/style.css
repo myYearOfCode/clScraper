@@ -5,9 +5,6 @@ body {
 
 .outside {
   background-color: white;
-  /* border-style: solid;
-  border-width: thin;
-  border-color: #000; */
   border-radius: 5px;
   box-shadow: 10px 10px 15px grey;
   margin: 10px;
