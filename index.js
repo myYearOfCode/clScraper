@@ -24,11 +24,6 @@ var corsOptions = {
 // setup CORS before the routes are set up:
 app.use(cors(whitelist));
 
-// respond with "hello world" when a GET request is made to the homepage
-// app.get('/', function (req, res) {
-//   res.send('hello world')
-// })
-
 app.get('/query_test', function (req, res) {
   console.log(req.query)
   res.send(req.query.query)
@@ -38,7 +33,7 @@ const urls = ['https://vermont.craigslist.org/search/sss?sort=rel&query=yuba+%7C
 'https://boston.craigslist.org/search/sss?query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1&sort=rel',
 'https://maine.craigslist.org/search/sss?sort=rel&query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1']
 
-url_bases=['vermont', 'boston', 'maine']
+// url_bases=['vermont', 'boston', 'maine']
 
 let blocked = ['6825381358','6819957875','6043518208'] // replace with db or file
 
@@ -46,6 +41,8 @@ app.get('/api/', function (req, res) {
   let results = {}
   let cities = req.query.cities.split(',')
   cities.forEach((base, index) => {
+    // console.log(base, index);
+    // console.log(`https://${base}.craigslist.org/search/sss?query=${req.query.search}`);
     rp(`https://${base}.craigslist.org/search/sss?query=${req.query.search}`) // returns a promise
       .then(function(html){
         $('.result-row', html).each(function(index) {
@@ -56,6 +53,7 @@ app.get('/api/', function (req, res) {
            let link = $(this).find('.result-title').attr('href')
            let dataPid = $(this).attr('data-pid')
            let repostPid = $(this).attr('data-repost-of')
+           // console.log(`madeit`);
            let newObject = new Posting(
              dataIdString,
              title,
@@ -66,8 +64,10 @@ app.get('/api/', function (req, res) {
              dataPid,
              repostPid)
              results[dataPid] = newObject
+             // console.log(`new object created`);
         })
-        if (index === urls.length-1){ // if we are at the end of the url list
+        if (index === cities.length-1){ // if we are at the end of the url list
+          // console.log(`sending response now`);
           res.send((results)) // this is for the node api version.
         }
       })
