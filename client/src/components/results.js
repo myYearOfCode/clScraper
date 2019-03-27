@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import queryString from "query-string"
+// import queryString from "query-string"
 import Listing from './listing'
 import SearchBar from './search_bar'
+
 class Results extends Component {
   constructor(props){
     super(props);
     this.state = {
-      blocked: this.props.blocked,
-      updateBlocked: this.props.updateBlocked,
+      blocked: [],
+      // updateBlocked: this.props.updateBlocked,
       data: {},
   }
 }
@@ -45,22 +46,31 @@ class Results extends Component {
   }
 
   async componentDidMount() {
-    fetch(
-      `http://localhost:3001/getData`//`${query}`
-    )
-    .then(response => {
-      return response.json() //creates its own promise?!?!
-    })
-    .then(data => {
-      this.setState({data: {}}) //clears the state data
-      this.setState({data: data})
-      console.log(this.state.data)
-    })
+    // let it load blankly. I'm ok with that.
+    // fetch(
+    //   `http://localhost:3001/getData`//`${query}`
+    // )
+    // .then(response => {
+    //   return response.json() //creates its own promise?!?!
+    // })
+    // .then(data => {
+    //   this.setState({data: {}}) //clears the state data
+    //   // this.setState({data: data})
+    //   // this.clearMainState()
+    //   this.updateMainState(data)
+    //   // console.log(this.state.data)
+    // })
+  }
+
+  clearMainState = () => {
+    this.setState({data: {}})
+    console.log(`data cleared`);
   }
 
   updateMainState = (data) => {
-    this.setState({data: {}}) //clears the state data
-    this.setState({data: data})
+    // this.setState({data: {}}) //clears the state data
+    // this.setState({data: data})
+    this.setState({ data: Object.assign(this.state.data, data ) }) //appends new data
     console.log(this.state.data)
   }
 
@@ -88,7 +98,10 @@ class Results extends Component {
   render () {
     return (
       <div className="outside5">
-        <SearchBar updateMainState = {this.updateMainState}/>
+        <SearchBar
+        updateMainState = {this.updateMainState}
+        clearMainState = {this.clearMainState}
+        />
         <div className="wrapper">
           {this.makePosts()}
         </div>

@@ -32,7 +32,7 @@ class Listing extends Component {
   getImage = (dataId,size) => {
     // sizes: 50x50 300x300 600x450
     let url = ""
-    if (dataId != undefined) {
+    if (dataId !== undefined) {
       let images = (this.parseDataId(dataId));
       // return images.map((image) => {
        url = `https://images.craigslist.org/${images[0]}_300x300.jpg`
@@ -45,7 +45,7 @@ class Listing extends Component {
   }
 
   parseDataId = (dataId) => {
-    if (dataId != undefined) {
+    if (dataId !== undefined) {
       try {
         let imageArray = dataId.split(",") || ""
         imageArray = imageArray.map((imageId) => {
