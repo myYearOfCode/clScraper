@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Listing from './listing'
 import SearchBar from './search_bar'
 
+
 class Results extends Component {
   constructor(props){
     super(props);
@@ -45,22 +46,22 @@ class Results extends Component {
     y.forEach((each) => {each.addEventListener('click', display)})
   }
 
-  async componentDidMount() {
-    // let it load blankly. I'm ok with that.
-    // fetch(
-    //   `http://localhost:3001/getData`//`${query}`
-    // )
-    // .then(response => {
-    //   return response.json() //creates its own promise?!?!
-    // })
-    // .then(data => {
-    //   this.setState({data: {}}) //clears the state data
-    //   // this.setState({data: data})
-    //   // this.clearMainState()
-    //   this.updateMainState(data)
-    //   // console.log(this.state.data)
-    // })
-  }
+  // async componentDidMount() {
+  //   // let it load blankly. I'm ok with that.
+  //   fetch(
+  //     `http://localhost:3001/getData`//`${query}`
+  //   )
+  //   .then(response => {
+  //     return response.json() //creates its own promise?!?!
+  //   })
+  //   .then(data => {
+  //     this.setState({data: {}}) //clears the state data
+  //     // this.setState({data: data})
+  //     // this.clearMainState()
+  //     this.updateMainState(data)
+  //     // console.log(this.state.data)
+  //   })
+  // }
 
   clearMainState = () => {
     this.setState({data: {}})
@@ -98,6 +99,7 @@ class Results extends Component {
   render () {
     return (
       <div className="outside5">
+
         <SearchBar
         updateMainState = {this.updateMainState}
         clearMainState = {this.clearMainState}
