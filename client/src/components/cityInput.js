@@ -476,19 +476,18 @@ class CityInput extends Component {
   constructor(props){
     super(props);
     this.state = {
-      selectedCity: ''
     }
   }
 
   citySelector = event => {
-    // console.log(event.target.value)
-    const matches = all_sites.filter(site => site.includes(event.target.value.toLowerCase()));
-    console.log(matches)
-    if (matches.length === 1){
-      this.setState({selectedCity: matches})
-    } else {
-      this.setState({selectedCity: event.target.value})
-    }
+    this.props.handleCityEntry(event)
+    // const matches = all_sites.filter(site => site.includes(event.target.value.toLowerCase()));
+    // console.log(matches)
+    // if (matches.length === 1){
+    //   this.setState({selectedCity: matches})
+    // } else {
+    //   this.setState({selectedCity: event.target.value})
+    // }
   }
   render () {
     return(
@@ -496,7 +495,7 @@ class CityInput extends Component {
           <label className="input-group-field">
           City Selector
             <input
-              value={this.state.selectedCity}
+              value={this.props.selectedCity}
               className="input-group-field"
               type="text"
               onChange={this.citySelector}

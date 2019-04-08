@@ -7,110 +7,43 @@ class SearchBar extends Component {
     super(props);
     this.state = {
       updateMainState: props.updateMainState,
-      clearMainState: props.clearMainState
+      clearMainState: props.clearMainState,
+      citiesList: "",
+      selectedCity: ""
     }
+    this.handleCityEntry = this.handleCityEntry.bind(this)
   }
 
-  async componentDidMount() {
-    let button = document.getElementById('submit_search')
-    let getNewSearch = (event) => {
-      let query = encodeURI(document.getElementsByClassName('input-group-field')[0].value)
-      console.log(query)
-      //
-      // //THIS SHOULD HAPPEN ON THE SERVER SIDE
-      // //HOW DO I KNOW IF IT IS BLOCKING ON THE SERVER SIDE?
-      //
-      // // split cities out into individual queries
-      // // fire off three queries in rapid fire
-      // // clear the state, then each one appends the state
-      // // the advantage is that we will see a response faster
-      // this.props.clearMainState()
-      // fetch(
-      //   `http://localhost:3001/api?search=${query}&cities=boston`
-      //   // `http://localhost:3001/api?search=${query}&cities=boston%2Cvermont%2Cmaine`
-      // )
-      // .then(response => {
-      //   return response.json() //creates its own promise?!?!
-      // })
-      // .then(data => {
-      //   console.log(data)
-      //   this.state.updateMainState(data)
-      // })
-      // fetch(
-      //   `http://localhost:3001/api?search=${query}&cities=vermont`
-      // )
-      // .then(response => {
-      //   return response.json() //creates its own promise?!?!
-      // })
-      // .then(data => {
-      //   console.log(data)
-      //   this.state.updateMainState(data)
-      // })
-      // fetch(
-      //   `http://localhost:3001/api?search=${query}&cities=maine`
-      // )
-      // .then(response => {
-      //   return response.json() //creates its own promise?!?!
-      // })
-      // .then(data => {
-      //   console.log(data)
-      //   this.state.updateMainState(data)
-      // })
-    }
-    //bind the callback function to the element
-    // button.addEventListener('click', getNewSearch)
-  }
-
-  submitOnEnter = event => {
-    console.log(event.key);
+  handleCityEntry = (event) => {
+    // debugger
+    // let citiesInputSplit = event.target.value.split(',')
+    // console.log(citiesInputSplit)
+    this.setState({selectedCity: event.target.value})
   }
 
   getNewSearch = (event) => {
     event.preventDefault()
-    let query = encodeURI(document.getElementsByClassName('input-group-field')[0].value)
+    let query = encodeURI(document.getElementById("search_term_input").value)
     console.log(query)
-
-    //THIS SHOULD HAPPEN ON THE SERVER SIDE
-    //HOW DO I KNOW IF IT IS BLOCKING ON THE SERVER SIDE?
-
+    console.log(this.state.selectedCity.split(','))
     // split cities out into individual queries
     // fire off three queries in rapid fire
     // clear the state, then each one appends the state
-    // the advantage is that we will see a response faster
     this.props.clearMainState()
+    // let citiesList = ['boston','vermont','maine']
+    let citiesList = this.state.selectedCity.split(',')
 
-    fetch(
-      `http://localhost:3001/api?search=${query}&cities=boston`
-      // `http://localhost:3001/api?search=${query}&cities=boston%2Cvermont%2Cmaine`
-    )
-    .then(response => {
-      return response.json() //creates its own promise?!?!
-    })
-    .then(data => {
-      console.log('boston')
-      this.state.updateMainState(data)
-    })
-
-    fetch(
-      `http://localhost:3001/api?search=${query}&cities=vermont`
-    )
-    .then(response => {
-      return response.json() //creates its own promise?!?!
-    })
-    .then(data => {
-      console.log('vermont')
-      this.state.updateMainState(data)
-    })
-
-    fetch(
-      `http://localhost:3001/api?search=${query}&cities=maine`
-    )
-    .then(response => {
-      return response.json() //creates its own promise?!?!
-    })
-    .then(data => {
-      console.log('maine')
-      this.state.updateMainState(data)
+    citiesList.forEach(city => {
+      fetch(
+        `http://localhost:3001/api?search=${query}&cities=${city}`
+      )
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        console.log(`${city}`)
+        this.state.updateMainState(data)
+      })
     })
   }
 
@@ -119,13 +52,25 @@ class SearchBar extends Component {
     <div className= "headerBar">
       <form onSubmit={this.getNewSearch}>
         <div className="input-group">
-          <CityInput />
+          <CityInput
+            handleCityEntry={this.handleCityEntry}
+            selectedCity={this.state.selectedCity}
+          />
           <label className="input-group-field">
             Search Terms
-            <input className="input-group-field" type="text" />
+            <input
+              className="input-group-field"
+              id="search_term_input"
+              type="text"
+            />
           </label>
           <div className="input-group-button">
-            <input type="submit" className="button" id="submit_search" value="Search" />
+            <input
+              type="submit"
+              className="button"
+              id="submit_search"
+              value="Search"
+            />
           </div>
         </div>
       </form>
