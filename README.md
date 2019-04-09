@@ -1,4 +1,5 @@
 # clScraper
+![screengrab of an early version](/images/ScreenShot.png?raw=true)
 A node-based scraper with a react front end to practice server side scraping with jquery/cheerio.
 
 This is a simple project designed to grab some results from craigslist and then display them in a slightly different way. 
