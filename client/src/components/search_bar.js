@@ -9,7 +9,7 @@ class SearchBar extends Component {
       updateMainState: props.updateMainState,
       clearMainState: props.clearMainState,
       citiesList: "",
-      selectedCity: ""
+      selectedCity: "boston,vermont,maine"
     }
     this.handleCityEntry = this.handleCityEntry.bind(this)
   }
