@@ -42,7 +42,7 @@ app.get('/nearby/', function (req, res) {
     $('.acitem', html).first().find('a').each(function(item) {
       let urlPrefix=$(this).attr('href').split('.')[0].split('//')[1]
       let displayName = $(this).text()
-      closestCities[displayName] = urlPrefix
+      closestCities[urlPrefix] = displayName
     })
     console.log(closestCities)
     res.send(closestCities)
