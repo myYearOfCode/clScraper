@@ -14,6 +14,7 @@ class SearchBar extends Component {
     }
     this.handleCityEntry = this.handleCityEntry.bind(this)
     this.handleCitySelection = this.handleCitySelection.bind(this)
+    this.makeCitiesForm = this.makeCitiesForm.bind(this)
   }
 
   handleCityEntry = (city) => {
@@ -33,9 +34,20 @@ class SearchBar extends Component {
     })
     .then(response => response.json())
     .then(body => {
-      console.log(body)
+      console.log(Object.keys(body))
+      this.makeCitiesForm(body)
+      this.setState({nearbyCities: Object.keys(body)})
     })
     .catch(error => console.error( `Error in fetch: ${error.message}` ));
+  }
+
+  makeCitiesForm = (cities) => {
+    let citiesForm = [];
+    Object.keys(cities).forEach( city => {
+      citiesForm.push( <label htmlFor={city}><input type="checkbox" name={city}
+      value={cities[city]} id={city}/>{cities[city]}</label>);
+    })
+    return citiesForm
   }
 
   getNewSearch = (event) => {
@@ -89,6 +101,9 @@ class SearchBar extends Component {
             />
           </div>
         </div>
+      </form>
+      <form>
+        {this.makeCitiesForm(this.state.nearbyCities)}
       </form>
       {this.state.searchCities.join(', ')}
     </div>
