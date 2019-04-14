@@ -8,16 +8,34 @@ class SearchBar extends Component {
     this.state = {
       updateMainState: props.updateMainState,
       clearMainState: props.clearMainState,
-      nearbyCities: ["vermont","maine"],
-      selectedCity: "boston",
+      nearbyCities: [],
+      selectedCity: "",
       searchCities: []
     }
     this.handleCityEntry = this.handleCityEntry.bind(this)
+    this.handleCitySelection = this.handleCitySelection.bind(this)
   }
 
   handleCityEntry = (city) => {
-    // I should move the logic up into this component so I can also have the fetch here. or should I? new component for city selectr buttons??
     this.setState({selectedCity: city})
+  }
+
+  handleCitySelection = (city) => {
+    fetch('http://localhost:3001/nearby?city=boston')
+    .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        let errorMessage = `${response.status} (${response.statusText}) ,`
+        let error = new Error(errorMessage);
+        throw(error);
+      }
+    })
+    .then(response => response.json())
+    .then(body => {
+      console.log(body)
+    })
+    .catch(error => console.error( `Error in fetch: ${error.message}` ));
   }
 
   getNewSearch = (event) => {
@@ -51,6 +69,7 @@ class SearchBar extends Component {
         <div className="input-group">
           <CityInput
             handleCityEntry={this.handleCityEntry}
+            handleCitySelection={this.handleCitySelection}
             selectedCity={this.state.selectedCity}
           />
           <label className="input-group-field">

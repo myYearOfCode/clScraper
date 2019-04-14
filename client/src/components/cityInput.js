@@ -485,7 +485,7 @@ class CityInput extends Component {
     console.log(matches)
     if (matches.length === 1){
       this.props.handleCityEntry(matches)
-      // this.setState({selectedCity: matches})
+      this.props.handleCitySelection(matches)
     } else {
       this.props.handleCityEntry(event.target.value)
       // this.setState({selectedCity: event.target.value})

@@ -29,21 +29,37 @@ app.get('/query_test', function (req, res) {
   res.send(req.query.query)
 })
 
-const urls = ['https://vermont.craigslist.org/search/sss?sort=rel&query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1',
-'https://boston.craigslist.org/search/sss?query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1&sort=rel',
-'https://maine.craigslist.org/search/sss?sort=rel&query=yuba+%7C+%22big+dummy%22+%7C+%22cargo+bike%22+%7C+xtracycle+%7C+cetma+%7C+bullitt+%7C+babboe+%7C+metrofiets&excats=69-53-23-1-14-3-32-1']
-
-// url_bases=['vermont', 'boston', 'maine']
-
 let blocked = ['6825381358','6819957875','6043518208'] // replace with db or file
+
+/////////
+// MAKING THE CLOSEST CITIES ARRAY
+let closestCities = {}
+app.get('/nearby/', function (req, res) {
+  let main_city=req.query.city
+  console.log(main_city)
+  rp('https://maine.craigslist.org/')
+  .then(function(html){
+    $('.acitem', html).first().find('a').each(function(item) {
+      let urlPrefix=$(this).attr('href').split('.')[0].split('//')[1]
+      let displayName = $(this).text()
+      closestCities[displayName] = urlPrefix
+    })
+    console.log(closestCities)
+    res.send(closestCities)
+  })
+  .catch(function(err){
+    console.log(err)
+    res.send(`an error occurred ${err}`)
+  })
+})
+////////
+
 
 app.get('/api/', function (req, res) {
   let results = {}
   let cities = req.query.cities.split(',')
   cities.forEach((base, index) => {
-    // console.log(base, index);
-    // console.log(`https://${base}.craigslist.org/search/sss?query=${req.query.search}`);
-    rp(`https://${base}.craigslist.org/search/sss?query=${req.query.search}`) // returns a promise
+    rp(`https://${base}.craigslist.org/search/sss?query=${req.query.search}`)
       .then(function(html){
         $('.result-row', html).each(function(index) {
            let dataIdString = $(this).find('a').attr('data-ids')
@@ -53,7 +69,6 @@ app.get('/api/', function (req, res) {
            let link = $(this).find('.result-title').attr('href')
            let dataPid = $(this).attr('data-pid')
            let repostPid = $(this).attr('data-repost-of')
-           // console.log(`madeit`);
            let newObject = new Posting(
              dataIdString,
              title,
@@ -77,44 +92,6 @@ app.get('/api/', function (req, res) {
         res.send(`an error occurred ${err}`)
       })
   })
-
-})
-
-app.get('/getData', function (req, res) {
-  let results = {}
-  urls.forEach((url, index) => {
-    rp(url) // returns a promise
-      .then(function(html){
-        $('.result-row', html).each(function(index) {
-           let dataIdString = $(this).find('a').attr('data-ids')
-           let title = $(this).find('.result-title').text()
-           let price = $(this).find('.result-price').first().text()
-           let location = $(this).find('.result-hood').text() || "No Location"
-           let link = $(this).find('.result-title').attr('href')
-           let dataPid = $(this).attr('data-pid')
-           let repostPid = $(this).attr('data-repost-of')
-           let newObject = new Posting(
-             dataIdString,
-             title,
-             price,
-             location,
-             link,
-             blocked,
-             dataPid,
-             repostPid)
-             results[dataPid] = newObject
-        })
-        if (index === urls.length-1){ // if we are at the end of the url list
-          res.send((results)) // this is for the node api version.
-        }
-      })
-      .catch(function(err){
-        //handle error
-        console.log(err)
-        res.send(`an error occurred ${err}`)
-      })
-  })
-
 })
 
 // serve the static files from the React app
