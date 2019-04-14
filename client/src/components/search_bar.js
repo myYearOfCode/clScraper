@@ -8,32 +8,29 @@ class SearchBar extends Component {
     this.state = {
       updateMainState: props.updateMainState,
       clearMainState: props.clearMainState,
-      citiesList: "",
-      selectedCity: "boston,vermont,maine"
+      nearbyCities: ["vermont","maine"],
+      selectedCity: "boston",
+      searchCities: []
     }
     this.handleCityEntry = this.handleCityEntry.bind(this)
   }
 
-  handleCityEntry = (event) => {
-    // debugger
-    // let citiesInputSplit = event.target.value.split(',')
-    // console.log(citiesInputSplit)
-    this.setState({selectedCity: event.target.value})
+  handleCityEntry = (city) => {
+    // I should move the logic up into this component so I can also have the fetch here. or should I? new component for city selectr buttons??
+    this.setState({selectedCity: city})
   }
 
   getNewSearch = (event) => {
     event.preventDefault()
     let query = encodeURI(document.getElementById("search_term_input").value)
     console.log(query)
-    console.log(this.state.selectedCity.split(','))
     // split cities out into individual queries
     // fire off three queries in rapid fire
     // clear the state, then each one appends the state
     this.props.clearMainState()
-    // let citiesList = ['boston','vermont','maine']
-    let citiesList = this.state.selectedCity.split(',')
+    this.setState({searchCities: [...this.state.nearbyCities,this.state.selectedCity] })
 
-    citiesList.forEach(city => {
+    this.state.searchCities.forEach(city => {
       fetch(
         `http://localhost:3001/api?search=${query}&cities=${city}`
       )
@@ -74,6 +71,7 @@ class SearchBar extends Component {
           </div>
         </div>
       </form>
+      {this.state.searchCities.join(', ')}
     </div>
     )
   }

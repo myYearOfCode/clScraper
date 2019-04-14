@@ -9,7 +9,7 @@ class Results extends Component {
     super(props);
     this.state = {
       blocked: [],
-      // updateBlocked: this.props.updateBlocked,
+      updateBlocked: this.props.updateBlocked,
       data: {},
   }
 }
