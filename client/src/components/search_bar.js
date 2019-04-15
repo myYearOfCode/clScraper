@@ -22,7 +22,7 @@ class SearchBar extends Component {
   }
 
   handleCitySelection = (city) => {
-    fetch('http://localhost:3001/nearby?city=boston')
+    fetch(`http://localhost:3001/nearby?city=${city}`)
     .then(response => {
       if (response.ok) {
         return response;
@@ -44,8 +44,19 @@ class SearchBar extends Component {
   makeCitiesForm = (cities) => {
     let citiesForm = [];
     Object.keys(cities).forEach( city => {
-      citiesForm.push( <label htmlFor={city}><input type="checkbox" name={city}
-      value={cities[city]} id={city}/>{cities[city]}</label>);
+      citiesForm.push(
+        <div className="cityDiv">
+        <label htmlFor={city} key={`label${city}`}>
+        </label>
+        <input
+          type="checkbox"
+          name={cities[city]}
+          value={cities[city]}
+          id={cities[city]}
+          key={`checkBox${city}`}
+        />
+      {cities[city]}
+      </div>);
     })
     return citiesForm
   }
@@ -103,7 +114,9 @@ class SearchBar extends Component {
         </div>
       </form>
       <form>
+      <div className="citiesCheckBoxes">
         {this.makeCitiesForm(this.state.nearbyCities)}
+        </div>
       </form>
       {this.state.searchCities.join(', ')}
     </div>

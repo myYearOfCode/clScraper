@@ -37,7 +37,7 @@ let closestCities = {}
 app.get('/nearby/', function (req, res) {
   let main_city=req.query.city
   console.log(main_city)
-  rp('https://maine.craigslist.org/')
+  rp(`https://${main_city}.craigslist.org/`)
   .then(function(html){
     $('.acitem', html).first().find('a').each(function(item) {
       let urlPrefix=$(this).attr('href').split('.')[0].split('//')[1]
