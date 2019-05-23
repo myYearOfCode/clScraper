@@ -10,7 +10,7 @@ class Listing extends Component {
 
   makePostDiv = (post) => {
     return (
-      <div className = "outside" key={post.dataIdString}>
+      <div className = "outside" key={post.key}>
         <div className = "photoDiv">
           <a href = {post.link}>
             {this.getImage(post.dataIdString)}
