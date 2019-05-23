@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import queryString from "query-string"
 import Listing from './listing'
 import SearchBar from './search_bar'
 
@@ -9,7 +8,7 @@ class Results extends Component {
     super(props);
     this.state = {
       blocked: [],
-      // updateBlocked: this.props.updateBlocked,
+      updateBlocked: this.props.updateBlocked,
       data: {},
   }
 }
@@ -25,6 +24,7 @@ class Results extends Component {
         price: "",
         repostPid: i,
         title: "",
+        key: i
           }
     }
     this.setState({data: newObject})

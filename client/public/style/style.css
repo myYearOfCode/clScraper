@@ -59,3 +59,16 @@ img {
 .body {
   background-color: #000;
 }
+
+.citiesCheckBoxes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.cityDiv {
+  margin: 0 5px 0 5px;
+  display: flex;
+  flex-direction: row;
+}

@@ -8,32 +8,70 @@ class SearchBar extends Component {
     this.state = {
       updateMainState: props.updateMainState,
       clearMainState: props.clearMainState,
-      citiesList: "",
-      selectedCity: ""
+      nearbyCities: [],
+      selectedCity: "",
+      searchCities: []
     }
     this.handleCityEntry = this.handleCityEntry.bind(this)
+    this.handleCitySelection = this.handleCitySelection.bind(this)
+    this.makeCitiesForm = this.makeCitiesForm.bind(this)
   }
 
-  handleCityEntry = (event) => {
-    // debugger
-    // let citiesInputSplit = event.target.value.split(',')
-    // console.log(citiesInputSplit)
-    this.setState({selectedCity: event.target.value})
+  handleCityEntry = (city) => {
+    this.setState({selectedCity: city})
+  }
+
+  handleCitySelection = (city) => {
+    fetch(`http://localhost:3001/nearby?city=${city}`)
+    .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        let errorMessage = `${response.status} (${response.statusText}) ,`
+        let error = new Error(errorMessage);
+        throw(error);
+      }
+    })
+    .then(response => response.json())
+    .then(body => {
+      console.log(Object.keys(body))
+      this.makeCitiesForm(body)
+      this.setState({nearbyCities: Object.keys(body)})
+    })
+    .catch(error => console.error( `Error in fetch: ${error.message}` ));
+  }
+
+  makeCitiesForm = (cities) => {
+    let citiesForm = [];
+    Object.keys(cities).forEach( city => {
+      citiesForm.push(
+        <div className="cityDiv">
+        <label htmlFor={city} key={`label${city}`}>
+        </label>
+        <input
+          type="checkbox"
+          name={cities[city]}
+          value={cities[city]}
+          id={cities[city]}
+          key={`checkBox${city}`}
+        />
+      {cities[city]}
+      </div>);
+    })
+    return citiesForm
   }
 
   getNewSearch = (event) => {
     event.preventDefault()
     let query = encodeURI(document.getElementById("search_term_input").value)
     console.log(query)
-    console.log(this.state.selectedCity.split(','))
     // split cities out into individual queries
     // fire off three queries in rapid fire
     // clear the state, then each one appends the state
     this.props.clearMainState()
-    // let citiesList = ['boston','vermont','maine']
-    let citiesList = this.state.selectedCity.split(',')
+    this.setState({searchCities: [...this.state.nearbyCities,this.state.selectedCity] })
 
-    citiesList.forEach(city => {
+    this.state.searchCities.forEach(city => {
       fetch(
         `http://localhost:3001/api?search=${query}&cities=${city}`
       )
@@ -54,6 +92,7 @@ class SearchBar extends Component {
         <div className="input-group">
           <CityInput
             handleCityEntry={this.handleCityEntry}
+            handleCitySelection={this.handleCitySelection}
             selectedCity={this.state.selectedCity}
           />
           <label className="input-group-field">
@@ -74,6 +113,12 @@ class SearchBar extends Component {
           </div>
         </div>
       </form>
+      <form>
+      <div className="citiesCheckBoxes">
+        {this.makeCitiesForm(this.state.nearbyCities)}
+        </div>
+      </form>
+      {this.state.searchCities.join(', ')}
     </div>
     )
   }

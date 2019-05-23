@@ -481,13 +481,15 @@ class CityInput extends Component {
 
   citySelector = event => {
     this.props.handleCityEntry(event)
-    // const matches = all_sites.filter(site => site.includes(event.target.value.toLowerCase()));
-    // console.log(matches)
-    // if (matches.length === 1){
-    //   this.setState({selectedCity: matches})
-    // } else {
-    //   this.setState({selectedCity: event.target.value})
-    // }
+    const matches = all_sites.filter(site => site.includes(event.target.value.toLowerCase()));
+    console.log(matches)
+    if (matches.length === 1){
+      this.props.handleCityEntry(matches)
+      this.props.handleCitySelection(matches)
+    } else {
+      this.props.handleCityEntry(event.target.value)
+      // this.setState({selectedCity: event.target.value})
+    }
   }
   render () {
     return(
