@@ -472,7 +472,7 @@ let all_sites=["Alabama",
 "puerto rico",
 "U.S. virgin islands"]
 
-class CityInput extends Component {
+class city_input extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -507,4 +507,4 @@ class CityInput extends Component {
     )
   }
 }
-export default CityInput;
+export default city_input;
