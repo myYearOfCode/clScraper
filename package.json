@@ -21,11 +21,11 @@
     "express": "^4.16.4",
     "query-string": "^6.4.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "request-promise": "^4.2.4",
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.10"
   },
   "devDependencies": {
-    "concurrently": "^4.1.0",
     "gh-pages": "^2.0.1",
-    "nodemon": "^1.18.10"
   }
 }
