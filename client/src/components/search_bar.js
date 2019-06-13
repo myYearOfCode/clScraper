@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import CityInput from './cityInput'
-
+import CityInput from './city_input'
 
 class SearchBar extends Component {
   constructor(props){
