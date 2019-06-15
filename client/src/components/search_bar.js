@@ -44,17 +44,19 @@ class SearchBar extends Component {
     let citiesForm = [];
     Object.keys(cities).forEach( city => {
       citiesForm.push(
-        <div className="cityDiv">
-        <label htmlFor={city} key={`label${city}`}>
+        <div
+          className="cityDiv"
+          key={`checkBox${city}`}
+        >
+        <label htmlFor={cities[city]} key={`label${city}`}>
+        {cities[city]}
         </label>
         <input
           type="checkbox"
           name={cities[city]}
-          value={cities[city]}
           id={cities[city]}
-          key={`checkBox${city}`}
+          defaultChecked="checked"
         />
-      {cities[city]}
       </div>);
     })
     return citiesForm
@@ -65,12 +67,16 @@ class SearchBar extends Component {
     let query = encodeURI(document.getElementById("search_term_input").value)
     console.log(query)
     // split cities out into individual queries
-    // fire off three queries in rapid fire
-    // clear the state, then each one appends the state
+    // clear the state
+    // fire off the queries
+    // then each one appends to the state when the promise is returned
     this.props.clearMainState()
-    this.setState({searchCities: [...this.state.nearbyCities,this.state.selectedCity] })
+    console.log(this.state.nearbyCities)
+    console.log(this.state.selectedCity)
+    let searchCities = [...this.state.nearbyCities,this.state.selectedCity]
+    this.setState({searchCities: searchCities })
 
-    this.state.searchCities.forEach(city => {
+    searchCities.forEach(city => {
       fetch(
         `http://localhost:3001/api?search=${query}&cities=${city}`
       )
@@ -111,13 +117,12 @@ class SearchBar extends Component {
             />
           </div>
         </div>
-      </form>
-      <form>
-      <div className="citiesCheckBoxes">
+        <div className="citiesCheckBoxes">
         {this.makeCitiesForm(this.state.nearbyCities)}
         </div>
       </form>
-      {this.state.searchCities.join(', ')}
+      <form>
+      </form>
     </div>
     )
   }

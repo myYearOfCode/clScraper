@@ -11,12 +11,13 @@ class Results extends Component {
       updateBlocked: this.props.updateBlocked,
       data: {},
   }
+  this.clearMainState = this.clearMainState.bind(this)
 }
 
   componentWillMount() {
     let newObject = {}
     for (let i = 0; i < 13; i++) {
-      newObject[i] = {blocked: [],
+      newObject[i] = {
         dataIdString: "",
         dataPid: i,
         link: "",
@@ -46,31 +47,12 @@ class Results extends Component {
     y.forEach((each) => {each.addEventListener('click', display)})
   }
 
-  // async componentDidMount() {
-  //   // let it load blankly. I'm ok with that.
-  //   fetch(
-  //     `http://localhost:3001/getData`//`${query}`
-  //   )
-  //   .then(response => {
-  //     return response.json() //creates its own promise?!?!
-  //   })
-  //   .then(data => {
-  //     this.setState({data: {}}) //clears the state data
-  //     // this.setState({data: data})
-  //     // this.clearMainState()
-  //     this.updateMainState(data)
-  //     // console.log(this.state.data)
-  //   })
-  // }
-
   clearMainState = () => {
     this.setState({data: {}})
     console.log(`data cleared`);
   }
 
   updateMainState = (data) => {
-    // this.setState({data: {}}) //clears the state data
-    // this.setState({data: data})
     this.setState({ data: Object.assign(this.state.data, data ) }) //appends new data
     console.log(this.state.data)
   }
@@ -84,9 +66,8 @@ class Results extends Component {
           let blockList = this.state.blocked
           if ((!blockList.includes(post.dataPid)) && (!blockList.includes(post.repostPid)) && (!posted.includes(post.dataPid)) && (!posted.includes(post.repostPid))) {
             posted.push(post.dataPid)
-            posted.push(post.repostPid)
+            // posted.push(post.repostPid)
             return <Listing post={post} />
-            // return this.makePostDiv(post)
           }
         })
       }
@@ -105,7 +86,8 @@ class Results extends Component {
         clearMainState = {this.clearMainState}
         />
         <div className="wrapper">
-          {this.makePosts()}
+          {`${Object.keys(this.state.data).length} total records found.`}
+          {this.makePosts(this.state.data)}
         </div>
       </div>
 
