@@ -29,8 +29,6 @@ app.get('/query_test', function (req, res) {
   res.send(req.query.query)
 })
 
-let blocked = ['6825381358','6819957875','6043518208'] // replace with db or file
-
 /////////
 // MAKING THE CLOSEST CITIES ARRAY
 let closestCities = {}
@@ -67,23 +65,20 @@ app.get('/api/', function (req, res) {
            let price = $(this).find('.result-price').first().text()
            let location = $(this).find('.result-hood').text() || "No Location"
            let link = $(this).find('.result-title').attr('href')
-           let dataPid = $(this).attr('data-pid')
-           let repostPid = $(this).attr('data-repost-of')
+           let dataPid = $(this).attr('data-pid') || null
+           let repostPid = $(this).attr('data-repost-of') || null
            let newObject = new Posting(
              dataIdString,
              title,
              price,
              location,
              link,
-             blocked,
              dataPid,
              repostPid)
              results[dataPid] = newObject
-             // console.log(`new object created`);
         })
         if (index === cities.length-1){ // if we are at the end of the url list
-          // console.log(`sending response now`);
-          res.send((results)) // this is for the node api version.
+          res.send((results))
         }
       })
       .catch(function(err){

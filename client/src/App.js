@@ -5,7 +5,7 @@ let blocked = JSON.parse(window.localStorage.getItem('blockedPosts')) || [];
 let updateBlocked = (toBlock) => {
   blocked = JSON.parse(window.localStorage.getItem('blockedPosts'))
 }
-//
+
 class App extends Component {
   render() {
     return (

@@ -26,6 +26,6 @@
     "nodemon": "^1.18.10"
   },
   "devDependencies": {
-    "gh-pages": "^2.0.1",
+    "gh-pages": "^2.0.1"
   }
 }
