@@ -8,24 +8,21 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "nodemon index.js",
     "client": "cd client && npm start",
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "start": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "concurrently": "^4.1.0",
     "cors": "^2.8.5",
     "diskdb": "^0.1.17",
     "express": "^4.16.4",
+    "nodemon": "^1.18.10",
     "query-string": "^6.4.0",
+    "react-scripts": "2.1.5",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4",
-    "concurrently": "^4.1.0",
-    "nodemon": "^1.18.10"
+    "request-promise": "^4.2.4"
   },
-  "devDependencies": {
-    "gh-pages": "^2.0.1"
-  }
+  "devDependencies": {}
 }
